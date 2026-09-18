@@ -77,6 +77,10 @@ label{display:block;font-family:'Space Grotesk',sans-serif;font-size:11.5px;font
   <div id="erro-entrada"></div>
   <label for="senha">Senha</label>
   <input type="password" id="senha" autocomplete="current-password">
+  <label style="display:flex;align-items:center;gap:8px;margin:14px 0 0;text-transform:none;
+    letter-spacing:0;font-size:13.5px;color:var(--suave);font-family:'Inter',sans-serif;font-weight:400">
+    <input type="checkbox" id="lembrar" checked style="width:auto">
+    Continuar conectado neste aparelho</label>
   <button class="bt bt-p" id="entrar" style="width:100%;justify-content:center;margin-top:16px">Entrar</button>
 </div></div>
 
@@ -85,6 +89,7 @@ label{display:block;font-family:'Space Grotesk',sans-serif;font-size:11.5px;font
     <div class="marca">iNova <i>&middot;</i> produção</div>
     <div class="esp"></div>
     <button class="bt bt-o bt-peq" id="btn-codigo">Código do cliente</button>
+    <button class="bt bt-o bt-peq" id="sair" title="Esquecer este aparelho">Sair</button>
     <button class="bt bt-o bt-peq" id="recarregar">Atualizar</button>
     <button class="bt bt-p bt-peq" id="novo">Novo post</button>
   </div></div>
@@ -107,6 +112,8 @@ label{display:block;font-family:'Space Grotesk',sans-serif;font-size:11.5px;font
 
   function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){
     return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function guarda(k,v){ try{ v?localStorage.setItem(k,v):localStorage.removeItem(k); }catch(e){} }
+  function lembra(k){ try{ return localStorage.getItem(k)||''; }catch(e){ return ''; } }
   function msg(el,t,x){el.innerHTML='<div class="aviso a-'+t+'">'+esc(x)+'</div>';}
 
   function api(acao,extra){
@@ -156,6 +163,8 @@ label{display:block;font-family:'Space Grotesk',sans-serif;font-size:11.5px;font
       '<div class="acoes"><button class="bt bt-o bt-peq" data-ed="'+p.id+'">Editar</button>'+
       (p.status==='rascunho'?'<button class="bt bt-v bt-peq" data-env="'+p.id+'">Enviar p/ aprovação</button>':'')+
       (p.status==='aprovado'?'<button class="bt bt-v bt-peq" data-pub="'+p.id+'">Marcar publicado</button>':'')+
+      '<span style="flex:1"></span>'+
+      '<button class="bt bt-d bt-peq" data-del="'+p.id+'" title="Excluir post">Excluir</button>'+
       '</div></div></div>';
   }
 
@@ -211,6 +220,15 @@ label{display:block;font-family:'Space Grotesk',sans-serif;font-size:11.5px;font
       api('salvar',{id:b.getAttribute('data-pub'),post:{status:'publicado'}})
         .then(carregar).then(function(){msg($('#msg'),'ok','Marcado como publicado.')})
         .catch(function(e){b.disabled=false;msg($('#msg'),'erro',e.message)});
+    }; });
+    todos('[data-del]',c).forEach(function(b){ b.onclick=function(){
+      var id=b.getAttribute('data-del');
+      var p=dados.posts.filter(function(x){return x.id===id})[0]||{titulo:'este post'};
+      if(!confirm('Excluir "'+p.titulo+'"?\n\nA ação não pode ser desfeita. O post some também do painel do cliente.')) return;
+      b.disabled=true; b.textContent='Excluindo…';
+      api('excluir',{id:id})
+        .then(carregar).then(function(){msg($('#msg'),'ok','Post excluído.')})
+        .catch(function(e){b.disabled=false;b.textContent='Excluir';msg($('#msg'),'erro',e.message)});
     }; });
   }
 
@@ -312,7 +330,10 @@ label{display:block;font-family:'Space Grotesk',sans-serif;font-size:11.5px;font
     if(!v){ msg($('#erro-entrada'),'erro','Digite a senha.'); return; }
     var b=$('#entrar'); b.disabled=true; b.textContent='Entrando…';
     senha=v;
-    carregar().then(function(){ $('#tela-entrada').hidden=true; $('#tela').hidden=false; })
+    carregar().then(function(){
+        if($('#lembrar') && $('#lembrar').checked) guarda('ag_senha',senha);
+        $('#tela-entrada').hidden=true; $('#tela').hidden=false;
+      })
       .catch(function(e){ b.disabled=false; b.textContent='Entrar'; senha='';
         msg($('#erro-entrada'),'erro',e.message); });
   }
@@ -325,6 +346,26 @@ label{display:block;font-family:'Space Grotesk',sans-serif;font-size:11.5px;font
     carregar().catch(function(e){msg($('#msg'),'erro',e.message)}); };
   $('#modal').addEventListener('click',function(e){ if(e.target===$('#modal')) fechar(); });
   document.addEventListener('keydown',function(e){ if(e.key==='Escape') fechar(); });
+  $('#sair').onclick=function(){
+    guarda('ag_senha',''); senha='';
+    if(typeof location.reload==='function'){ location.reload(); return; }
+    $('#tela').hidden=true; $('#tela-entrada').hidden=false;
+    var c=$('#senha'); if(c){ c.value=''; c.focus(); }
+  };
+
+  /* ── já conectado neste aparelho? entra sozinho ── */
+  (function inicia(){
+    var sv=lembra('ag_senha');
+    if(!sv){ $('#senha').focus(); return; }
+    senha=sv;
+    $('#tela-entrada').innerHTML='<div class="entrada" style="text-align:center">'+
+      '<h1 style="margin:0">Abrindo…</h1></div>';
+    carregar().then(function(){ $('#tela-entrada').hidden=true; $('#tela').hidden=false; })
+      .catch(function(){
+        guarda('ag_senha',''); senha='';
+        location.reload();
+      });
+  })();
 })();
 </script>
 </body>
