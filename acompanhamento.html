@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Acompanhamento de postagens · Omni Tous</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--roxo:#5830B4;--roxo-c:#7B4FE0;--verde:#2ABA53;--verde-c:#3BD672;
+  --navy:#140D30;--fundo:#0A0518;--card:#1A1136;--linha:#2A1E58;
+  --texto:#EDEAF6;--suave:#B6AEDA;--fraco:#8781AB}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--fundo);color:var(--texto);
+  font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.dsp,button{font-family:'Space Grotesk',sans-serif}
+.topo{position:sticky;top:0;z-index:30;background:rgba(10,5,24,.94);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--linha)}
+.topo-in,.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+.topo-in{display:flex;align-items:center;gap:14px;padding:16px 20px;flex-wrap:wrap}
+.marca{font-weight:700;font-size:17px;letter-spacing:-.3px}
+.marca i{color:var(--verde-c);font-style:normal}
+.esp{flex:1}
+.wrap{padding:26px 20px 90px}
+.bt{font-size:14px;font-weight:600;padding:11px 20px;border-radius:10px;border:1.5px solid transparent;
+  cursor:pointer;background:none;color:#fff;display:inline-flex;align-items:center;gap:8px;transition:.2s}
+.bt-p{background:linear-gradient(112deg,var(--roxo) 0%,var(--roxo-c) 42%,var(--verde) 100%)}
+.bt-v{background:var(--verde);color:var(--navy)}
+.bt-o{border-color:rgba(255,255,255,.22)}
+.bt-o:hover{border-color:#fff}
+.bt:hover{transform:translateY(-1px)} .bt:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.bt-peq{font-size:13px;padding:9px 15px}
+input,textarea,select{width:100%;background:var(--fundo);color:#fff;border:1.5px solid var(--linha);
+  border-radius:10px;padding:12px 14px;font-family:'Inter',sans-serif;font-size:14.5px;line-height:1.5}
+textarea{resize:vertical;min-height:90px}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--roxo-c)}
+label{display:block;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;
+  letter-spacing:.5px;text-transform:uppercase;color:var(--fraco);margin-bottom:7px}
+.entrada{max-width:400px;margin:14vh auto;padding:34px 30px;border-radius:18px;
+  background:var(--card);border:1px solid var(--linha)}
+.entrada h1{font-size:21px;margin-bottom:6px}
+.entrada p{color:var(--fraco);font-size:13.5px;margin-bottom:22px}
+.aviso{padding:13px 16px;border-radius:11px;font-size:14px;margin:14px 0;border:1px solid}
+.a-erro{background:rgba(226,76,76,.12);border-color:rgba(226,76,76,.45);color:#FFB9B9}
+.a-ok{background:rgba(42,186,83,.12);border-color:rgba(42,186,83,.45);color:#9BE9B4}
+.abas{display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap}
+.aba{font-size:14px;font-weight:600;padding:9px 17px;border-radius:99px;
+  border:1.5px solid var(--linha);background:none;color:var(--suave);cursor:pointer}
+.aba.on{background:var(--roxo);border-color:var(--roxo);color:#fff}
+.resumo{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:24px}
+.kpi{background:var(--card);border:1px solid var(--linha);border-radius:14px;padding:16px 18px}
+.kpi b{font-family:'Space Grotesk',sans-serif;font-size:30px;display:block;line-height:1.1}
+.kpi span{font-size:12.5px;color:var(--fraco)}
+</style>
+</head>
+<body>
+<style>
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal .cab{font-family:'Space Grotesk',sans-serif;font-size:11.5px;font-weight:600;color:var(--fraco);
+  text-align:center;padding:6px 0;letter-spacing:.6px}
+.dia{min-height:76px;border:1px solid var(--linha);border-radius:10px;padding:6px 7px;background:var(--card);
+  font-size:12px;color:var(--fraco);position:relative;overflow:hidden}
+.dia.fora{opacity:.32}
+.dia.hoje{border-color:var(--roxo-c)}
+.pt{display:block;width:100%;text-align:left;margin-top:4px;border:none;border-radius:6px;
+  padding:4px 6px;font-size:11px;line-height:1.3;cursor:pointer;color:#fff;
+  font-family:'Inter',sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pt.aguardando{background:#6A4A12;color:#FFDFA0} .pt.aprovado{background:#14512A;color:#9BE9B4}
+.pt.ajuste{background:#5C1F24;color:#FFC0C4} .pt.publicado{background:#241C50;color:#B6AEDA}
+.lista{display:grid;gap:12px}
+.item{display:flex;gap:16px;background:var(--card);border:1px solid var(--linha);border-radius:14px;
+  padding:14px;cursor:pointer;transition:.18s;text-align:left;width:100%;color:inherit;font:inherit}
+.item:hover{border-color:var(--roxo-c)}
+.thumb{width:92px;height:115px;border-radius:9px;object-fit:cover;background:#120C28;flex:0 0 auto}
+.thumb.vazio{display:flex;align-items:center;justify-content:center;color:var(--fraco);
+  font-size:11px;text-align:center;padding:6px}
+.item h3{font-size:16.5px;margin-bottom:5px}
+.meta{font-size:12.5px;color:var(--fraco);display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.tag{font-family:'Space Grotesk',sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.7px;
+  padding:3px 9px;border-radius:99px;text-transform:uppercase}
+.t-aguardando{background:#6A4A12;color:#FFDFA0} .t-aprovado{background:var(--verde);color:var(--navy)}
+.t-ajuste{background:#5C1F24;color:#FFC0C4} .t-publicado{background:#241C50;color:#B6AEDA}
+.corte{font-size:13px;color:var(--suave);margin-top:7px;display:-webkit-box;-webkit-line-clamp:2;
+  -webkit-box-orient:vertical;overflow:hidden}
+.fundo-modal{position:fixed;inset:0;background:rgba(6,3,16,.82);backdrop-filter:blur(6px);
+  z-index:60;display:none;overflow-y:auto;padding:24px 16px}
+.fundo-modal.on{display:block}
+.modal{max-width:880px;margin:0 auto;background:var(--card);border:1px solid var(--linha);
+  border-radius:18px;overflow:hidden}
+.modal-cab{display:flex;align-items:flex-start;gap:14px;padding:20px 22px;border-bottom:1px solid var(--linha)}
+.modal-cab h2{font-size:19px;line-height:1.25}
+.fechar{background:none;border:none;color:var(--fraco);font-size:26px;cursor:pointer;line-height:1;padding:0 4px}
+.modal-corpo{display:grid;grid-template-columns:320px 1fr;gap:0}
+.arte{background:#0C0720;padding:20px;display:flex;align-items:flex-start;justify-content:center}
+.arte img{width:100%;border-radius:10px;display:block}
+.arte .vazio{color:var(--fraco);font-size:13px;text-align:center;padding:40px 10px}
+.modal-lado{padding:20px 22px;border-left:1px solid var(--linha)}
+.leg{background:var(--fundo);border:1px solid var(--linha);border-radius:11px;padding:14px;
+  font-size:14px;white-space:pre-wrap;max-height:230px;overflow-y:auto;margin-bottom:8px}
+.hist{margin-top:18px;border-top:1px solid var(--linha);padding-top:14px}
+.hist-item{background:var(--fundo);border-left:3px solid var(--roxo-c);border-radius:8px;
+  padding:10px 12px;margin-bottom:8px;font-size:13.5px}
+.hist-item small{display:block;color:var(--fraco);font-size:11.5px;margin-top:4px}
+.acoes{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+.vazio-geral{text-align:center;padding:60px 20px;color:var(--fraco)}
+@media (max-width:760px){
+  .modal-corpo{grid-template-columns:1fr} .modal-lado{border-left:none;border-top:1px solid var(--linha)}
+  .cal{gap:3px} .dia{min-height:58px;padding:4px} .thumb{width:70px;height:88px}
+}
+</style>
+
+<div id="tela">
+  <div class="topo"><div class="topo-in">
+    <div class="marca">Omni Tous <i>&middot;</i> postagens</div>
+    <div class="esp"></div>
+    <button class="bt bt-o bt-peq" id="nova-solic">Solicitar pauta</button>
+    <button class="bt bt-o bt-peq" id="recarregar">Atualizar</button>
+  </div></div>
+  <div class="wrap">
+    <div id="msg"></div>
+    <div class="resumo" id="resumo"></div>
+    <div class="abas">
+      <button class="aba on" data-v="calendario">Calendário</button>
+      <button class="aba" data-v="lista">Lista</button>
+      <button class="aba" data-v="solicitacoes">Minhas solicitações</button>
+    </div>
+    <div id="conteudo"></div>
+  </div>
+</div>
+
+<div class="fundo-modal" id="modal"><div class="modal" id="modal-in"></div></div>
+<script>
+(function(){
+  'use strict';
+  /* ═══════════════════════════════════════════════════════════
+     CONFIGURAÇÃO
+     CODIGO precisa ser o mesmo que você definiu no banco com
+     select public.painel_definir_codigo('...');
+     ═══════════════════════════════════════════════════════════ */
+  var CODIGO='XPFN-8734';
+
+  var URL_SB='https://dzmveizdmrqoqhznpeom.supabase.co', KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR6bXZlaXpkbXJxb3Foem5wZW9tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkyOTE0NTEsImV4cCI6MjEwNDg2NzQ1MX0.BUzzZOXXJyT7ydYXkAPrKLR9iP4s4n9K_fIAHQ6TxPs';
+  var $=function(s,r){return (r||document).querySelector(s)};
+  var todos=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+  var codigo=CODIGO, nome='', dados={posts:[],solicitacoes:[]}, vista='calendario', mesRef=new Date();
+
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function msg(el,tipo,txt){el.innerHTML='<div class="aviso a-'+tipo+'">'+esc(txt)+'</div>';}
+
+  function guarda(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+  function lembra(k){ try{ return localStorage.getItem(k)||''; }catch(e){ return ''; } }
+
+
+  function rpc(fn,args){
+    return fetch(URL_SB+'/rest/v1/rpc/'+fn,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':KEY,'Authorization':'Bearer '+KEY},
+      body:JSON.stringify(args)
+    }).then(function(r){
+      return r.json().then(function(j){
+        if(!r.ok){
+          var m=(j&&(j.message||j.hint))||'erro';
+          if(/codigo_invalido/.test(m)) throw new Error('Código inválido.');
+          if(/texto_curto/.test(m)) throw new Error('Escreva um pouco mais.');
+          if(/texto_longo/.test(m)) throw new Error('Texto muito longo.');
+          if(/muitas_solicitacoes/.test(m)) throw new Error('Muitas solicitações em pouco tempo. Tente mais tarde.');
+          if(/post_ja_publicado/.test(m)) throw new Error('Este post já foi publicado.');
+          if(/Could not find the function|does not exist|schema cache/i.test(m))
+            throw new Error('O banco ainda não tem as funções do painel. Rode o banco.sql no Supabase.');
+          if(r.status===401 || r.status===403)
+            throw new Error('A chave pública não foi aceita pelo projeto. Confira a URL e a chave no arquivo.');
+          throw new Error('['+r.status+'] '+m);
+        }
+        return j;
+      });
+    });
+  }
+  function carregar(){
+    return rpc('painel_listar',{p_codigo:codigo}).then(function(j){
+      dados=j||{}; dados.posts=dados.posts||[]; dados.solicitacoes=dados.solicitacoes||[];
+      desenhar();
+    });
+  }
+  function kpi(n,t,cor){
+    return '<div class="kpi"><b'+(cor?' style="color:'+cor+'"':'')+'>'+n+'</b><span>'+t+'</span></div>';
+  }
+  function desenharResumo(){
+    var c={aguardando:0,aprovado:0,ajuste:0,publicado:0};
+    dados.posts.forEach(function(p){ if(c[p.status]!==undefined) c[p.status]++; });
+    var abertas=dados.solicitacoes.filter(function(s){return s.status==='aberta'}).length;
+    $('#resumo').innerHTML=kpi(c.aguardando,'aguardando você',c.aguardando?'var(--verde-c)':'')+
+      kpi(c.aprovado,'aprovados')+kpi(c.ajuste,'com ajuste pedido')+kpi(abertas,'solicitações abertas');
+  }
+  function rotulo(s){
+    return {aguardando:'aguardando',aprovado:'aprovado',ajuste:'ajuste pedido',publicado:'publicado'}[s]||s;
+  }
+  function dataBr(iso){ return new Date(iso+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'short'}); }
+
+  function cartao(p){
+    var t=p.midia_url?'<img class="thumb" src="'+esc(p.midia_url)+'" alt="">'
+                     :'<div class="thumb vazio">arte<br>em produção</div>';
+    var nAj=(p.ajustes||[]).length;
+    return '<button class="item" data-id="'+p.id+'">'+t+
+      '<div style="flex:1;min-width:0"><h3>'+esc(p.titulo)+'</h3><div class="meta">'+
+      '<span class="tag t-'+p.status+'">'+rotulo(p.status)+'</span><span>'+
+      (p.data_publicacao?dataBr(p.data_publicacao):'sem data')+'</span><span>'+esc(p.rede)+'</span>'+
+      (nAj?'<span>'+nAj+' ajuste'+(nAj>1?'s':'')+'</span>':'')+'</div>'+
+      '<div class="corte">'+esc(p.legenda)+'</div></div></button>';
+  }
+  function desenharCalendario(){
+    var ano=mesRef.getFullYear(), mes=mesRef.getMonth();
+    var prim=new Date(ano,mes,1), ini=new Date(prim); ini.setDate(1-((prim.getDay()+6)%7));
+    var nomes=['SEG','TER','QUA','QUI','SEX','SÁB','DOM'];
+    var hoje=new Date(); hoje.setHours(0,0,0,0);
+    var porDia={};
+    dados.posts.forEach(function(p){ if(p.data_publicacao){ (porDia[p.data_publicacao]=porDia[p.data_publicacao]||[]).push(p); } });
+    var h='<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">'+
+      '<button class="bt bt-o bt-peq" id="mes-ant">&larr;</button>'+
+      '<strong class="dsp" style="font-size:17px">'+
+      prim.toLocaleDateString('pt-BR',{month:'long',year:'numeric'})+'</strong>'+
+      '<button class="bt bt-o bt-peq" id="mes-prox">&rarr;</button></div><div class="cal">';
+    nomes.forEach(function(n){ h+='<div class="cab">'+n+'</div>'; });
+    for(var i=0;i<42;i++){
+      var d=new Date(ini.getFullYear(),ini.getMonth(),ini.getDate()+i);
+      var iso=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+      h+='<div class="dia'+(d.getMonth()!==mes?' fora':'')+(d.getTime()===hoje.getTime()?' hoje':'')+'">'+d.getDate();
+      (porDia[iso]||[]).forEach(function(p){
+        h+='<button class="pt '+p.status+'" data-id="'+p.id+'" title="'+esc(p.titulo)+'">'+esc(p.titulo)+'</button>';
+      });
+      h+='</div>';
+    }
+    h+='</div>';
+    var semData=dados.posts.filter(function(p){return !p.data_publicacao});
+    if(semData.length){
+      h+='<p style="margin-top:18px;color:var(--fraco);font-size:13px">Sem data definida</p>'+
+         '<div class="lista" style="margin-top:8px">'+semData.map(cartao).join('')+'</div>';
+    }
+    return h;
+  }
+  function desenharSolic(){
+    if(!dados.solicitacoes.length)
+      return '<div class="vazio-geral">Nenhuma solicitação ainda.<br><br>'+
+        '<button class="bt bt-p" id="solic-vazio">Solicitar uma pauta</button></div>';
+    return '<div class="lista">'+dados.solicitacoes.map(function(s){
+      var cor = s.status==='concluida'?'t-aprovado':(s.status==='aberta'?'t-aguardando':'t-publicado');
+      return '<div class="item" style="cursor:default;display:block">'+
+        '<div class="meta" style="margin-bottom:6px"><span class="tag '+cor+'">'+
+        esc(s.status.replace('_',' '))+'</span><span>'+
+        new Date(s.criado_em).toLocaleDateString('pt-BR')+'</span></div>'+
+        '<div style="font-size:14.5px">'+esc(s.texto)+'</div>'+
+        (s.resposta?'<div class="hist-item" style="margin-top:10px">'+esc(s.resposta)+
+          '<small>resposta da iNova</small></div>':'')+'</div>';
+    }).join('')+'</div>';
+  }
+  function desenhar(){
+    desenharResumo();
+    var c=$('#conteudo');
+    if(vista==='calendario') c.innerHTML=desenharCalendario();
+    else if(vista==='lista') c.innerHTML = dados.posts.length
+      ? '<div class="lista">'+dados.posts.map(cartao).join('')+'</div>'
+      : '<div class="vazio-geral">Nenhum post para acompanhar ainda.</div>';
+    else c.innerHTML=desenharSolic();
+    var a=$('#mes-ant'); if(a) a.onclick=function(){mesRef=new Date(mesRef.getFullYear(),mesRef.getMonth()-1,1);desenhar();};
+    var p=$('#mes-prox'); if(p) p.onclick=function(){mesRef=new Date(mesRef.getFullYear(),mesRef.getMonth()+1,1);desenhar();};
+    var sv=$('#solic-vazio'); if(sv) sv.onclick=abrirSolicitacao;
+    todos('[data-id]',c).forEach(function(el){ el.onclick=function(){abrirPost(el.getAttribute('data-id'))}; });
+  }
+  function fechar(){ $('#modal').classList.remove('on'); document.body.style.overflow=''; }
+
+  function abrirPost(id){
+    var p=dados.posts.filter(function(x){return x.id===id})[0];
+    if(!p) return;
+    var arte=p.midia_url?'<img src="'+esc(p.midia_url)+'" alt="">'
+      :'<div class="vazio">A arte ainda está em produção.<br>A legenda já pode ser revisada.</div>';
+    var hist='';
+    if((p.ajustes||[]).length){
+      hist='<div class="hist"><label>Ajustes pedidos</label>'+p.ajustes.map(function(a){
+        return '<div class="hist-item">'+esc(a.texto)+'<small>'+(a.autor?esc(a.autor)+' · ':'')+
+          new Date(a.criado_em).toLocaleString('pt-BR')+(a.resolvido_em?' · resolvido':'')+'</small></div>';
+      }).join('')+'</div>';
+    }
+    var pedeNome = nome
+      ? '<p style="margin-top:16px;font-size:13px;color:var(--fraco)">Agindo como <b style="color:var(--texto)">'+
+        esc(nome)+'</b> · <a href="#" id="trocar-nome" style="color:var(--verde-c)">trocar</a></p>'
+      : '<div style="margin-top:16px"><label for="f-nome">Seu nome</label>'+
+        '<input id="f-nome" autocomplete="name" placeholder="para a iNova saber quem pediu"></div>';
+    var acoes = p.status==='publicado'
+      ? '<p style="color:var(--fraco);font-size:13.5px;margin-top:16px">Este post já foi publicado.</p>'
+      : pedeNome+'<div class="acoes"><button class="bt bt-v" id="aprovar">Aprovar</button>'+
+        '<button class="bt bt-o" id="ajustar">Pedir ajuste</button></div>'+
+        '<div id="form-ajuste" hidden style="margin-top:14px">'+
+        '<label for="txt-ajuste">O que precisa mudar?</label>'+
+        '<textarea id="txt-ajuste" placeholder="Seja específico: qual trecho e o que trocar."></textarea>'+
+        '<div class="acoes"><button class="bt bt-p" id="enviar-ajuste">Enviar pedido</button>'+
+        '<button class="bt bt-o" id="cancelar-ajuste">Cancelar</button></div></div>';
+    var aprov = p.aprovado_em
+      ? '<p style="color:var(--verde-c);font-size:13px;margin-top:12px">Aprovado por '+
+        esc(p.aprovado_por||'—')+' em '+new Date(p.aprovado_em).toLocaleString('pt-BR')+'.</p>':'';
+
+    $('#modal-in').innerHTML=
+      '<div class="modal-cab"><div style="flex:1"><h2>'+esc(p.titulo)+'</h2><div class="meta" style="margin-top:6px">'+
+      '<span class="tag t-'+p.status+'">'+rotulo(p.status)+'</span><span>'+
+      (p.data_publicacao?dataBr(p.data_publicacao):'sem data')+'</span><span>'+esc(p.rede)+'</span></div></div>'+
+      '<button class="fechar" id="fecha">&times;</button></div>'+
+      '<div class="modal-corpo"><div class="arte">'+arte+'</div><div class="modal-lado">'+
+      '<label>Legenda</label><div class="leg">'+esc(p.legenda)+'</div>'+
+      '<button class="bt bt-o bt-peq" id="copiar">Copiar legenda</button>'+
+      '<div id="msg-modal"></div>'+aprov+hist+acoes+'</div></div>';
+
+    $('#modal').classList.add('on'); document.body.style.overflow='hidden';
+    $('#fecha').onclick=fechar;
+    $('#copiar').onclick=function(){
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(p.legenda).then(
+          function(){msg($('#msg-modal'),'ok','Legenda copiada.')},
+          function(){msg($('#msg-modal'),'erro','Não consegui copiar. Selecione o texto manualmente.')});
+      } else msg($('#msg-modal'),'erro','Selecione o texto manualmente.');
+    };
+    function colheNome(){
+      var c=$('#f-nome');
+      if(c && c.value.trim()){ nome=c.value.trim(); guarda('pnome',nome); }
+      return nome;
+    }
+    var tn=$('#trocar-nome');
+    if(tn) tn.onclick=function(e){
+      e.preventDefault(); nome=''; guarda('pnome','');
+      abrirPost(p.id);
+    };
+    var ba=$('#aprovar');
+    if(ba) ba.onclick=function(){
+      if(!colheNome()){ msg($('#msg-modal'),'erro','Diga seu nome para registrar a aprovação.');
+        var c=$('#f-nome'); if(c) c.focus(); return; }
+      ba.disabled=true; ba.textContent='Aprovando…';
+      rpc('painel_aprovar',{p_codigo:codigo,p_post:p.id,p_autor:nome})
+        .then(carregar)
+        .then(function(){ fechar(); msg($('#msg'),'ok','Post aprovado. A iNova já vê o aceite.'); })
+        .catch(function(e){ ba.disabled=false; ba.textContent='Aprovar'; msg($('#msg-modal'),'erro',e.message); });
+    };
+    var bj=$('#ajustar');
+    if(bj) bj.onclick=function(){ $('#form-ajuste').hidden=false; bj.disabled=true; $('#txt-ajuste').focus(); };
+    var bc=$('#cancelar-ajuste');
+    if(bc) bc.onclick=function(){ $('#form-ajuste').hidden=true; $('#ajustar').disabled=false; };
+    var be=$('#enviar-ajuste');
+    if(be) be.onclick=function(){
+      var t=$('#txt-ajuste').value.trim();
+      if(t.length<5){ msg($('#msg-modal'),'erro','Descreva o que precisa mudar.'); return; }
+      if(!colheNome()){ msg($('#msg-modal'),'erro','Diga seu nome para a iNova saber quem pediu.');
+        var cn=$('#f-nome'); if(cn) cn.focus(); return; }
+      be.disabled=true; be.textContent='Enviando…';
+      rpc('painel_pedir_ajuste',{p_codigo:codigo,p_post:p.id,p_texto:t,p_autor:nome})
+        .then(carregar)
+        .then(function(){ fechar(); msg($('#msg'),'ok','Pedido de ajuste enviado.'); })
+        .catch(function(e){ be.disabled=false; be.textContent='Enviar pedido'; msg($('#msg-modal'),'erro',e.message); });
+    };
+  }
+
+  function abrirSolicitacao(){
+    $('#modal-in').innerHTML=
+      '<div class="modal-cab"><div style="flex:1"><h2>Solicitar uma pauta</h2>'+
+      '<p style="color:var(--fraco);font-size:13.5px;margin-top:4px">'+
+      'Conte o assunto que você quer ver publicado. Entra na fila de produção.</p></div>'+
+      '<button class="fechar" id="fecha">&times;</button></div>'+
+      '<div style="padding:20px 22px"><label for="txt-solic">O que você quer publicar?</label>'+
+      '<textarea id="txt-solic" placeholder="Ex.: um post sobre o novo prazo do eSocial."></textarea>'+
+      (nome?'<p style="margin-top:12px;font-size:13px;color:var(--fraco)">Enviando como <b style="color:var(--texto)">'+
+        esc(nome)+'</b></p>'
+       :'<div style="margin-top:12px"><label for="f-nome">Seu nome</label>'+
+        '<input id="f-nome" autocomplete="name" placeholder="para a iNova saber quem pediu"></div>')+
+      '<div id="msg-modal"></div><div class="acoes">'+
+      '<button class="bt bt-p" id="enviar-solic">Enviar</button>'+
+      '<button class="bt bt-o" id="cancelar-solic">Cancelar</button></div></div>';
+    $('#modal').classList.add('on'); document.body.style.overflow='hidden';
+    $('#fecha').onclick=fechar; $('#cancelar-solic').onclick=fechar; $('#txt-solic').focus();
+    $('#enviar-solic').onclick=function(){
+      var b=this, t=$('#txt-solic').value.trim();
+      if(t.length<10){ msg($('#msg-modal'),'erro','Descreva um pouco mais.'); return; }
+      var cn=$('#f-nome');
+      if(cn && cn.value.trim()){ nome=cn.value.trim(); guarda('pnome',nome); }
+      if(!nome){ msg($('#msg-modal'),'erro','Diga seu nome para a iNova saber quem pediu.');
+        if(cn) cn.focus(); return; }
+      b.disabled=true; b.textContent='Enviando…';
+      rpc('painel_abrir_solicitacao',{p_codigo:codigo,p_texto:t,p_autor:nome})
+        .then(carregar)
+        .then(function(){ fechar(); msg($('#msg'),'ok','Solicitação registrada.'); })
+        .catch(function(e){ b.disabled=false; b.textContent='Enviar'; msg($('#msg-modal'),'erro',e.message); });
+    };
+  }
+
+  $('#nova-solic').onclick=abrirSolicitacao;
+  $('#recarregar').onclick=function(){ $('#msg').innerHTML=''; carregar().catch(function(e){msg($('#msg'),'erro',e.message)}); };
+  $('#modal').addEventListener('click',function(e){ if(e.target===$('#modal')) fechar(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') fechar(); });
+  todos('.aba').forEach(function(a){
+    a.onclick=function(){
+      todos('.aba').forEach(function(x){x.classList.remove('on')});
+      a.classList.add('on'); vista=a.getAttribute('data-v'); desenhar();
+    };
+  });
+  /* ── abre direto: o link é o acesso ── */
+  (function inicia(){
+    nome=lembra('pnome');
+    carregar().catch(function(e){
+      $('#conteudo').innerHTML='';
+      msg($('#msg'),'erro','Não consegui carregar o painel. '+e.message+
+        ' Se o problema continuar, avise a iNova.');
+    });
+  })();
+})();
+</script>
+</body>
+</html>

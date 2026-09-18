@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Produção de postagens · iNova</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--roxo:#5830B4;--roxo-c:#7B4FE0;--verde:#2ABA53;--verde-c:#3BD672;
+  --fundo:#0A0518;--card:#1A1136;--linha:#2A1E58;--texto:#EDEAF6;--suave:#B6AEDA;--fraco:#8781AB}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--fundo);color:var(--texto);font-size:15px;line-height:1.55}
+h1,h2,h3,button,.dsp{font-family:'Space Grotesk',sans-serif}
+.topo{position:sticky;top:0;z-index:30;background:rgba(10,5,24,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--linha)}
+.topo-in,.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+.topo-in{display:flex;align-items:center;gap:12px;padding:15px 20px;flex-wrap:wrap}
+.marca{font-weight:700;font-size:16.5px}.marca i{color:var(--verde-c);font-style:normal}
+.esp{flex:1}.wrap{padding:24px 20px 90px}
+.bt{font-size:14px;font-weight:600;padding:10px 18px;border-radius:10px;border:1.5px solid transparent;
+  cursor:pointer;background:none;color:#fff;display:inline-flex;align-items:center;gap:7px;transition:.2s}
+.bt-p{background:linear-gradient(112deg,var(--roxo) 0%,var(--roxo-c) 42%,var(--verde) 100%)}
+.bt-v{background:var(--verde);color:#140D30}.bt-o{border-color:rgba(255,255,255,.22)}
+.bt-d{border-color:rgba(226,76,76,.5);color:#FFB9B9}
+.bt:disabled{opacity:.45;cursor:not-allowed}.bt-peq{font-size:12.5px;padding:8px 13px}
+input,textarea,select{width:100%;background:var(--fundo);color:#fff;border:1.5px solid var(--linha);
+  border-radius:9px;padding:11px 13px;font-family:'Inter',sans-serif;font-size:14px}
+textarea{resize:vertical;min-height:150px;line-height:1.55}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--roxo-c)}
+label{display:block;font-family:'Space Grotesk',sans-serif;font-size:11.5px;font-weight:600;
+  letter-spacing:.5px;text-transform:uppercase;color:var(--fraco);margin:0 0 6px}
+.campo{margin-bottom:14px}
+.entrada{max-width:390px;margin:14vh auto;padding:32px 28px;border-radius:18px;background:var(--card);border:1px solid var(--linha)}
+.entrada h1{font-size:20px;margin-bottom:18px}
+.aviso{padding:12px 15px;border-radius:10px;font-size:13.5px;margin:12px 0;border:1px solid}
+.a-erro{background:rgba(226,76,76,.12);border-color:rgba(226,76,76,.45);color:#FFB9B9}
+.a-ok{background:rgba(42,186,83,.12);border-color:rgba(42,186,83,.45);color:#9BE9B4}
+.abas{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.aba{font-size:13.5px;font-weight:600;padding:8px 16px;border-radius:99px;border:1.5px solid var(--linha);
+  background:none;color:var(--suave);cursor:pointer}
+.aba.on{background:var(--roxo);border-color:var(--roxo);color:#fff}
+.aba b{background:var(--verde);color:#140D30;border-radius:99px;padding:1px 7px;margin-left:6px;font-size:11px}
+.grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:14px}
+.pc{background:var(--card);border:1px solid var(--linha);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.pc .arte{aspect-ratio:4/5;background:#120C28;display:flex;align-items:center;justify-content:center;
+  color:var(--fraco);font-size:12px}
+.pc .arte img{width:100%;height:100%;object-fit:cover;display:block}
+.pc .in{padding:13px 14px;flex:1;display:flex;flex-direction:column;gap:7px}
+.pc h3{font-size:15px;line-height:1.3}
+.meta{font-size:12px;color:var(--fraco);display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+.tag{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;letter-spacing:.6px;
+  padding:3px 8px;border-radius:99px;text-transform:uppercase}
+.t-rascunho{background:#2A1E58;color:#B6AEDA}.t-aguardando{background:#6A4A12;color:#FFDFA0}
+.t-aprovado{background:var(--verde);color:#140D30}.t-ajuste{background:#5C1F24;color:#FFC0C4}
+.t-publicado{background:#241C50;color:#B6AEDA}
+.alerta-aj{background:rgba(226,76,76,.14);border-left:3px solid #E24C4C;border-radius:7px;
+  padding:8px 10px;font-size:12.5px;color:#FFC0C4}
+.acoes{display:flex;gap:7px;margin-top:auto;padding-top:8px;flex-wrap:wrap}
+.fundo-modal{position:fixed;inset:0;background:rgba(6,3,16,.84);z-index:60;display:none;overflow-y:auto;padding:22px 14px}
+.fundo-modal.on{display:block}
+.modal{max-width:760px;margin:0 auto;background:var(--card);border:1px solid var(--linha);border-radius:16px}
+.modal-cab{display:flex;align-items:center;gap:12px;padding:18px 20px;border-bottom:1px solid var(--linha)}
+.modal-cab h2{font-size:18px;flex:1}
+.fechar{background:none;border:none;color:var(--fraco);font-size:25px;cursor:pointer;line-height:1}
+.modal-corpo{padding:20px}
+.duas{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.prev{width:100%;border-radius:10px;display:block;margin-bottom:8px}
+.sc{background:var(--card);border:1px solid var(--linha);border-radius:12px;padding:14px;margin-bottom:12px}
+.vazio{text-align:center;padding:50px 20px;color:var(--fraco)}
+@media (max-width:620px){.duas{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div id="tela-entrada"><div class="entrada">
+  <h1>Produção de postagens</h1>
+  <div id="erro-entrada"></div>
+  <label for="senha">Senha</label>
+  <input type="password" id="senha" autocomplete="current-password">
+  <button class="bt bt-p" id="entrar" style="width:100%;justify-content:center;margin-top:16px">Entrar</button>
+</div></div>
+
+<div id="tela" hidden>
+  <div class="topo"><div class="topo-in">
+    <div class="marca">iNova <i>&middot;</i> produção</div>
+    <div class="esp"></div>
+    <button class="bt bt-o bt-peq" id="btn-codigo">Código do cliente</button>
+    <button class="bt bt-o bt-peq" id="recarregar">Atualizar</button>
+    <button class="bt bt-p bt-peq" id="novo">Novo post</button>
+  </div></div>
+  <div class="wrap">
+    <div id="msg"></div>
+    <div class="abas" id="abas"></div>
+    <div id="conteudo"></div>
+  </div>
+</div>
+
+<div class="fundo-modal" id="modal"><div class="modal" id="modal-in"></div></div>
+<script>
+(function(){
+  'use strict';
+  var $=function(s,r){return (r||document).querySelector(s)};
+  var todos=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+  var senha='', dados={posts:[],solicitacoes:[]}, aba='todos', midiaNova=null;
+  var STATUS=['rascunho','aguardando','aprovado','ajuste','publicado'];
+  var REDES=['linkedin','instagram','facebook','ambas'];
+
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function msg(el,t,x){el.innerHTML='<div class="aviso a-'+t+'">'+esc(x)+'</div>';}
+
+  function api(acao,extra){
+    return fetch('/api/painel',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(Object.assign({senha:senha,acao:acao},extra||{}))})
+      .then(function(r){ return r.json().then(function(j){
+        if(!r.ok) throw new Error(j.erro||'erro'); return j; }); });
+  }
+  function carregar(){
+    return api('listar').then(function(j){
+      dados={posts:j.posts||[],solicitacoes:j.solicitacoes||[]}; desenhar();
+    });
+  }
+  function pendentes(p){ return (p.ajustes||[]).filter(function(a){return !a.resolvido_em}); }
+
+  function desenharAbas(){
+    var c={todos:dados.posts.length};
+    STATUS.forEach(function(s){ c[s]=dados.posts.filter(function(p){return p.status===s}).length; });
+    var aj=dados.posts.filter(function(p){return pendentes(p).length}).length;
+    var sol=dados.solicitacoes.filter(function(s){return s.status==='aberta'}).length;
+    var itens=[['todos','Todos',c.todos],['rascunho','Rascunho',c.rascunho],
+      ['aguardando','Aguardando',c.aguardando],['ajuste','Ajuste pedido',aj],
+      ['aprovado','Aprovado',c.aprovado],['publicado','Publicado',c.publicado],
+      ['solicitacoes','Solicitações',sol]];
+    $('#abas').innerHTML=itens.map(function(i){
+      var destaque=(i[0]==='ajuste'||i[0]==='solicitacoes')&&i[2]>0;
+      return '<button class="aba'+(aba===i[0]?' on':'')+'" data-a="'+i[0]+'">'+i[1]+
+        (i[2]?(destaque?'<b>'+i[2]+'</b>':' ('+i[2]+')'):'')+'</button>';
+    }).join('');
+    todos('.aba').forEach(function(b){ b.onclick=function(){ aba=b.getAttribute('data-a'); desenhar(); }; });
+  }
+
+  function cartao(p){
+    var pend=pendentes(p);
+    var arte=p.midia_url?'<img src="'+esc(p.midia_url)+'" alt="">':'sem arte';
+    var dias='';
+    if(p.status==='aguardando'){
+      var d=Math.floor((Date.now()-new Date(p.atualizado_em||p.criado_em))/86400000);
+      if(d>=1) dias='<span style="color:#FFDFA0">há '+d+' dia'+(d>1?'s':'')+'</span>';
+    }
+    return '<div class="pc"><div class="arte">'+arte+'</div><div class="in">'+
+      '<div class="meta"><span class="tag t-'+p.status+'">'+esc(p.status)+'</span>'+
+      '<span>'+(p.data_publicacao?new Date(p.data_publicacao+'T12:00:00').toLocaleDateString('pt-BR'):'sem data')+
+      '</span>'+dias+'</div><h3>'+esc(p.titulo)+'</h3>'+
+      (pend.length?'<div class="alerta-aj"><b>Ajuste pedido:</b> '+esc(pend[0].texto.slice(0,140))+'</div>':'')+
+      (p.aprovado_em?'<div class="meta">aprovado por '+esc(p.aprovado_por||'—')+'</div>':'')+
+      '<div class="acoes"><button class="bt bt-o bt-peq" data-ed="'+p.id+'">Editar</button>'+
+      (p.status==='rascunho'?'<button class="bt bt-v bt-peq" data-env="'+p.id+'">Enviar p/ aprovação</button>':'')+
+      (p.status==='aprovado'?'<button class="bt bt-v bt-peq" data-pub="'+p.id+'">Marcar publicado</button>':'')+
+      '</div></div></div>';
+  }
+
+  function desenharSolic(){
+    if(!dados.solicitacoes.length) return '<div class="vazio">Nenhuma solicitação do cliente.</div>';
+    return dados.solicitacoes.map(function(s){
+      var cor = s.status==='aberta'?'aguardando':(s.status==='concluida'?'aprovado':'publicado');
+      return '<div class="sc"><div class="meta" style="margin-bottom:7px">'+
+        '<span class="tag t-'+cor+'">'+esc(s.status.replace('_',' '))+'</span>'+
+        '<span>'+new Date(s.criado_em).toLocaleString('pt-BR')+'</span>'+
+        (s.autor?'<span>'+esc(s.autor)+'</span>':'')+'</div>'+
+        '<div style="font-size:14.5px;margin-bottom:10px">'+esc(s.texto)+'</div>'+
+        '<div class="campo"><label>Resposta</label><textarea data-resp="'+s.id+'" '+
+        'style="min-height:70px">'+esc(s.resposta||'')+'</textarea></div>'+
+        '<div class="acoes" style="padding-top:0">'+
+        '<select data-st="'+s.id+'" style="width:auto">'+
+        ['aberta','em_producao','concluida','recusada'].map(function(o){
+          return '<option value="'+o+'"'+(s.status===o?' selected':'')+'>'+o.replace('_',' ')+'</option>';
+        }).join('')+'</select>'+
+        '<button class="bt bt-p bt-peq" data-sv="'+s.id+'">Salvar</button></div></div>';
+    }).join('');
+  }
+  function desenhar(){
+    desenharAbas();
+    var c=$('#conteudo');
+    if(aba==='solicitacoes'){
+      c.innerHTML=desenharSolic();
+      todos('[data-sv]',c).forEach(function(b){
+        b.onclick=function(){
+          var id=b.getAttribute('data-sv'); b.disabled=true;
+          api('responder',{id:id,resposta:$('[data-resp="'+id+'"]').value,
+            status:$('[data-st="'+id+'"]').value})
+            .then(carregar).then(function(){msg($('#msg'),'ok','Solicitação atualizada.')})
+            .catch(function(e){b.disabled=false;msg($('#msg'),'erro',e.message)});
+        };
+      });
+      return;
+    }
+    var lista = aba==='todos' ? dados.posts
+      : aba==='ajuste' ? dados.posts.filter(function(p){return pendentes(p).length})
+      : dados.posts.filter(function(p){return p.status===aba});
+    c.innerHTML = lista.length ? '<div class="grade">'+lista.map(cartao).join('')+'</div>'
+      : '<div class="vazio">Nada aqui.</div>';
+    todos('[data-ed]',c).forEach(function(b){ b.onclick=function(){editar(b.getAttribute('data-ed'))}; });
+    todos('[data-env]',c).forEach(function(b){ b.onclick=function(){
+      b.disabled=true;
+      api('salvar',{id:b.getAttribute('data-env'),post:{status:'aguardando'}})
+        .then(carregar).then(function(){msg($('#msg'),'ok','Enviado para aprovação do cliente.')})
+        .catch(function(e){b.disabled=false;msg($('#msg'),'erro',e.message)});
+    }; });
+    todos('[data-pub]',c).forEach(function(b){ b.onclick=function(){
+      b.disabled=true;
+      api('salvar',{id:b.getAttribute('data-pub'),post:{status:'publicado'}})
+        .then(carregar).then(function(){msg($('#msg'),'ok','Marcado como publicado.')})
+        .catch(function(e){b.disabled=false;msg($('#msg'),'erro',e.message)});
+    }; });
+  }
+
+  function fechar(){ $('#modal').classList.remove('on'); document.body.style.overflow=''; midiaNova=null; }
+  function editar(id){
+    var p = id ? dados.posts.filter(function(x){return x.id===id})[0]
+               : {titulo:'',legenda:'',rede:'linkedin',status:'rascunho'};
+    if(!p) return;
+    midiaNova=null;
+    var pend=(p.ajustes||[]).filter(function(a){return !a.resolvido_em});
+    $('#modal-in').innerHTML=
+      '<div class="modal-cab"><h2>'+(id?'Editar post':'Novo post')+'</h2>'+
+      '<button class="fechar" id="fecha">&times;</button></div><div class="modal-corpo">'+
+      (pend.length?'<div class="alerta-aj" style="margin-bottom:14px"><b>O cliente pediu:</b> '+
+        esc(pend[0].texto)+'</div>':'')+
+      '<div class="campo"><label for="f-tit">Título interno</label>'+
+      '<input id="f-tit" value="'+esc(p.titulo)+'" maxlength="200"></div>'+
+      '<div class="duas"><div class="campo"><label for="f-data">Data de publicação</label>'+
+      '<input type="date" id="f-data" value="'+esc(p.data_publicacao||'')+'"></div>'+
+      '<div class="campo"><label for="f-rede">Rede</label><select id="f-rede">'+
+      REDES.map(function(r){return '<option value="'+r+'"'+(p.rede===r?' selected':'')+'>'+r+'</option>'}).join('')+
+      '</select></div></div>'+
+      '<div class="campo"><label for="f-leg">Legenda</label>'+
+      '<textarea id="f-leg" maxlength="4000">'+esc(p.legenda)+'</textarea></div>'+
+      '<div class="campo"><label>Arte</label>'+
+      '<img class="prev" id="prev"'+(p.midia_url?' src="'+esc(p.midia_url)+'"':' hidden')+' alt="">'+
+      '<input type="file" id="f-arq" accept="image/png,image/jpeg,image/webp,video/mp4"></div>'+
+      '<div class="campo"><label for="f-st">Status</label><select id="f-st">'+
+      STATUS.map(function(s){return '<option value="'+s+'"'+(p.status===s?' selected':'')+'>'+s+'</option>'}).join('')+
+      '</select></div><div id="msg-modal"></div>'+
+      '<div class="acoes"><button class="bt bt-p" id="salvar">Salvar</button>'+
+      '<button class="bt bt-o" id="cancelar">Cancelar</button>'+
+      (id?'<span style="flex:1"></span><button class="bt bt-d bt-peq" id="excluir">Excluir</button>':'')+
+      '</div></div>';
+    $('#modal').classList.add('on'); document.body.style.overflow='hidden';
+    $('#fecha').onclick=fechar; $('#cancelar').onclick=fechar;
+
+    $('#f-arq').onchange=function(){
+      var f=this.files&&this.files[0]; if(!f) return;
+      if(f.size>3*1024*1024){ msg($('#msg-modal'),'erro','Arquivo acima de 3 MB. Exporte em JPG para reduzir.'); this.value=''; return; }
+      var fr=new FileReader();
+      fr.onload=function(){
+        midiaNova={nome:f.name,tipo:f.type,base64:String(fr.result).split(',')[1]};
+        if(/^image\//.test(f.type)){ var im=$('#prev'); im.src=fr.result; im.hidden=false; }
+        msg($('#msg-modal'),'ok','Arte carregada. Clique em Salvar para enviar.');
+      };
+      fr.readAsDataURL(f);
+    };
+
+    $('#salvar').onclick=function(){
+      var b=this;
+      var post={ titulo:$('#f-tit').value.trim(), legenda:$('#f-leg').value,
+        rede:$('#f-rede').value, data_publicacao:$('#f-data').value||null, status:$('#f-st').value };
+      if(!post.titulo){ msg($('#msg-modal'),'erro','Dê um título ao post.'); return; }
+      b.disabled=true; b.textContent='Salvando…';
+      var passo = midiaNova
+        ? api('upload',midiaNova).then(function(r){ post.midia_url=r.url; })
+        : Promise.resolve();
+      passo.then(function(){ return api('salvar', id?{id:id,post:post}:{post:post}); })
+        .then(carregar)
+        .then(function(){ fechar(); msg($('#msg'),'ok','Post salvo.'); })
+        .catch(function(e){ b.disabled=false; b.textContent='Salvar'; msg($('#msg-modal'),'erro',e.message); });
+    };
+
+    var bx=$('#excluir');
+    if(bx) bx.onclick=function(){
+      if(!confirm('Excluir este post? A ação não pode ser desfeita.')) return;
+      bx.disabled=true;
+      api('excluir',{id:id}).then(carregar)
+        .then(function(){ fechar(); msg($('#msg'),'ok','Post excluído.'); })
+        .catch(function(e){ bx.disabled=false; msg($('#msg-modal'),'erro',e.message); });
+    };
+  }
+  function trocarCodigo(){
+    $('#modal-in').innerHTML=
+      '<div class="modal-cab"><h2>Código de acesso do cliente</h2>'+
+      '<button class="fechar" id="fecha">&times;</button></div><div class="modal-corpo">'+
+      '<p style="color:var(--fraco);font-size:13.5px;margin-bottom:14px">'+
+      'Defina o código que o cliente usa para entrar. Ele fica guardado em hash e não é exibido '+
+      'em nenhum lugar — se esquecer, defina outro aqui.</p>'+
+      '<div class="campo"><label for="f-cod">Novo código</label>'+
+      '<input id="f-cod" placeholder="mínimo 6 caracteres" autocomplete="off"></div>'+
+      '<div id="msg-modal"></div><div class="acoes">'+
+      '<button class="bt bt-p" id="salvar-cod">Definir</button>'+
+      '<button class="bt bt-o" id="cancelar">Cancelar</button></div></div>';
+    $('#modal').classList.add('on'); document.body.style.overflow='hidden';
+    $('#fecha').onclick=fechar; $('#cancelar').onclick=fechar;
+    $('#salvar-cod').onclick=function(){
+      var b=this, v=$('#f-cod').value.trim();
+      if(v.length<6){ msg($('#msg-modal'),'erro','Use pelo menos 6 caracteres.'); return; }
+      b.disabled=true;
+      api('codigo',{codigo:v}).then(function(){ fechar(); msg($('#msg'),'ok','Código atualizado.'); })
+        .catch(function(e){ b.disabled=false; msg($('#msg-modal'),'erro',e.message); });
+    };
+  }
+
+  function entrar(){
+    var v=$('#senha').value;
+    if(!v){ msg($('#erro-entrada'),'erro','Digite a senha.'); return; }
+    var b=$('#entrar'); b.disabled=true; b.textContent='Entrando…';
+    senha=v;
+    carregar().then(function(){ $('#tela-entrada').hidden=true; $('#tela').hidden=false; })
+      .catch(function(e){ b.disabled=false; b.textContent='Entrar'; senha='';
+        msg($('#erro-entrada'),'erro',e.message); });
+  }
+
+  $('#entrar').onclick=entrar;
+  $('#senha').onkeydown=function(e){ if(e.key==='Enter') entrar(); };
+  $('#novo').onclick=function(){ editar(null); };
+  $('#btn-codigo').onclick=trocarCodigo;
+  $('#recarregar').onclick=function(){ $('#msg').innerHTML='';
+    carregar().catch(function(e){msg($('#msg'),'erro',e.message)}); };
+  $('#modal').addEventListener('click',function(e){ if(e.target===$('#modal')) fechar(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') fechar(); });
+})();
+</script>
+</body>
+</html>
